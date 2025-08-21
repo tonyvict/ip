@@ -73,6 +73,20 @@ public class Tommy {
         System.out.println(" " + t);
     }
 
+    private static int deletor (Task[] tasks, int size, String input) {
+        Integer no = parseNo(input);
+        Task deletedtask = tasks[no - 1];
+        for (int i = no -1; i < size -1; i++) {
+            tasks[i] = tasks [i + 1];
+        }
+        tasks[size - 1] = null;
+
+        System.out.println("Noted. I've removed this task:");
+        System.out.println(" " + deletedtask);
+        System.out.println("Now you have " + (size -1) + " tasks in the list.");
+        return size -1;
+    }
+
     public static void main(String[] args) {
 
         System.out.println("Hello! I'm Tommy\nWhat can I do for you?");
@@ -98,7 +112,13 @@ public class Tommy {
                 marker(tasks, size, input, true);
             } else if (input.startsWith("unmark ")) {
                 marker(tasks, size, input, false);
-            } else {
+            } else if (input.startsWith("delete")) {
+                size = deletor(tasks, size, input);
+
+            }
+
+
+            else {
                 for (int i = 0; i < 100; i++) {
                     if (tasks[i] == null) {
                         size++;
