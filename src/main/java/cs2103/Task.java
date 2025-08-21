@@ -1,12 +1,12 @@
 package cs2103;
 
-public class Task {
+public abstract class Task {
 
-    private String name;
+    private final String fullname;
     private boolean status;
 
-    public Task(String name) {
-        this.name = name;
+    Task(String fullname) {
+        this.fullname = fullname;
         this.status = false;
     }
 
@@ -23,16 +23,18 @@ public class Task {
     }
 
     public String getName() {
-        return this.name;
+        return this.fullname;
     }
 
-  @Override
+    public String statusIcon() {
+        return status ? "X" : " ";
+    }
+
+    public abstract String typeIcon();
+
+    @Override
     public String toString() {
-        if (this.isMarked()) {
-            return "[X] " + this.name;
-        } else {
-            return "[ ] " + this.name;
-        }
+        return String.format("[%s][%s]%s", typeIcon(), statusIcon(), fullname);
     }
 }
 
