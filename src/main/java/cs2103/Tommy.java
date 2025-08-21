@@ -14,7 +14,7 @@ public class Tommy {
             return parts[1]; //for list todoo
         }
 
-        String[] description = parts[1].split("/");
+        String[] description = parts[1].split("/", 2);
         if (which == 2) {
             return description[0];//task name
         }
@@ -22,6 +22,30 @@ public class Tommy {
             return description[1]; //time for event and deadline
         }
         return null;
+    }
+
+    private static String deadlineday (String input) {
+        if (input == null) {
+            return null;
+        }
+
+        String day = (input.split(" "))[1];
+        return day;
+    }
+
+    private static String eventtiming (String input, int which) {
+        if (input == null) {
+            return null;
+        }
+        String[] splitty = input.split(" ", 2);//"from" and "Mon 2pm /to 4pm"
+        String[] both = splitty[1].split(" /to ",2);
+        if (which == 0) {
+            return both[0];
+        }
+        if (which == 1) {
+            return both[1];
+        }
+        return " ";
     }
 
     private static Integer parseNo (String input) {
@@ -71,6 +95,7 @@ public class Tommy {
             } else {
                 for (int i = 0; i < 100; i++) {
                     if (tasks[i] == null) {
+                        size++;
 
                         if (splitter(input,0).equals("todo")) {
                             tasks[i] = new Todo(splitter(input, 1));
@@ -80,21 +105,21 @@ public class Tommy {
                         }
 
                         if (splitter(input, 0).equals("deadline")) {
-                            tasks[i] = new Deadline(splitter(input, 2));
+                            tasks[i] = new Deadline(splitter(input, 2), deadlineday(splitter(input,3)));
                             System.out.println("Got it. I've added this task:");
-                            System.out.println(" " + tasks[i] + " (" + splitter(input, 3) + ")");
+                            System.out.println(" " + tasks[i]);
                             System.out.println("Now you have " + size + " tasks in the list.");
                         }
 
                         if (splitter(input, 0).equals("event")) {
-                            tasks[i] = new Event(splitter(input, 2));
+                            tasks[i] = new Event(splitter(input, 2), eventtiming(splitter(input,3),0), eventtiming(splitter(input,3),1));
                             System.out.println("Got it. I've added this task:");
-                            System.out.println(" " + tasks[i] + " (" + splitter(input, 3) + ")");
+                            System.out.println(" " + tasks[i]);
                             System.out.println("Now you have " + size + " tasks in the list.");
 
                         }
 
-                        size++;
+
 
 
                         break;
