@@ -83,8 +83,10 @@ public class Tommy {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
             } else if (input.equals("list")) {
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < size; i++) {
                     if (tasks[i] != null) {
+
                         System.out.printf("%d. %s%n", i + 1, tasks[i].toString());
                     }
                 }
