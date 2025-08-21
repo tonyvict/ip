@@ -1,24 +1,28 @@
-
 package cs2103;
 
 import java.util.Scanner;
 
 public class Tommy {
 
-    private static String splitter(String input, int which) {
+    private static String splitter(String input, int which) throws TommyException {
+
+        if (input == null || input.isEmpty()) {
+            throw new InvalidCmdException("Bro, i look like what to u, type smt first eh");
+        }
         String[] parts = input.split("\\s+", 2); //first split to get the name
         if (which == 0) {
             return parts[0]; //type of task
         }
         if (which == 1 ){
-            return parts[1]; //for list todoo
+            if (parts.length < 2) throw new MissingDescriptionException("Woiii, todo what?!");
+            else {return parts[1];} //for list todoo
         }
 
         String[] description = parts[1].split("/", 2);
         if (which == 2) {
             return description[0];//task name
         }
-         if (which == 3) {
+        if (which == 3) {
             return description[1]; //time for event and deadline
         }
         return null;
@@ -77,7 +81,7 @@ public class Tommy {
         int size = 0;
 
         while (true) {
-           String input = sc.nextLine();
+            String input = sc.nextLine();
 
             if (input.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
@@ -99,31 +103,31 @@ public class Tommy {
                     if (tasks[i] == null) {
                         size++;
 
-                        if (splitter(input,0).equals("todo")) {
-                            tasks[i] = new Todo(splitter(input, 1));
-                            System.out.println("Got it. I've added this task:");
-                            System.out.println(" " + tasks[i]);
-                            System.out.println("Now you have " + size + " tasks in the list.");
+                        try {
+
+                            if (splitter(input, 0).equals("todo")) {
+                                tasks[i] = new Todo(splitter(input, 1));
+                                System.out.println("Got it. I've added this task:");
+                                System.out.println(" " + tasks[i]);
+                                System.out.println("Now you have " + size + " tasks in the list.");
+                            } else if (splitter(input, 0).equals("deadline")) {
+                                tasks[i] = new Deadline(splitter(input, 2), deadlineday(splitter(input, 3)));
+                                System.out.println("Got it. I've added this task:");
+                                System.out.println(" " + tasks[i]);
+                                System.out.println("Now you have " + size + " tasks in the list.");
+                            } else if (splitter(input, 0).equals("event")) {
+                                tasks[i] = new Event(splitter(input, 2), eventtiming(splitter(input, 3), 0), eventtiming(splitter(input, 3), 1));
+                                System.out.println("Got it. I've added this task:");
+                                System.out.println(" " + tasks[i]);
+                                System.out.println("Now you have " + size + " tasks in the list.");
+                            } else {
+                                throw new InvalidCmdException("dun say random bs");
+                            }
+
+                        } catch (TommyException e) {
+                            System.out.println("Error: " + e.getMessage());
+                            size --;
                         }
-
-                        if (splitter(input, 0).equals("deadline")) {
-                            tasks[i] = new Deadline(splitter(input, 2), deadlineday(splitter(input,3)));
-                            System.out.println("Got it. I've added this task:");
-                            System.out.println(" " + tasks[i]);
-                            System.out.println("Now you have " + size + " tasks in the list.");
-                        }
-
-                        if (splitter(input, 0).equals("event")) {
-                            tasks[i] = new Event(splitter(input, 2), eventtiming(splitter(input,3),0), eventtiming(splitter(input,3),1));
-                            System.out.println("Got it. I've added this task:");
-                            System.out.println(" " + tasks[i]);
-                            System.out.println("Now you have " + size + " tasks in the list.");
-
-                        }
-
-
-
-
                         break;
                     }
                 }
@@ -132,6 +136,38 @@ public class Tommy {
         sc.close();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
