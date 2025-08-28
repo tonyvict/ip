@@ -66,7 +66,7 @@ public class Storage {
 
         String head = t.typeIcon() + " | " + ( t.isMarked()? "1" : "0" ) + " | " + t.getName();
         if(t instanceof Deadline) {
-            head += " | " + ((Deadline) t).getBy();
+            head += " | " + ((Deadline) t).getByString();
         }
         if(t instanceof Event) {
             head += " | " + ((Event) t).getFrom() + " | " + ((Event)t).getTo();
@@ -126,6 +126,7 @@ public class Storage {
             }
             case "D": {
                 String by = (tasky.length > 3) ? tasky[3] : "";
+                java.time.LocalDateTime dt = java.time.LocalDateTime.parse(by);
                 t = new Deadline(name, by);
                 break;
             }
