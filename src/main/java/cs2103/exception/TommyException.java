@@ -1,4 +1,4 @@
-package cs2103;
+package cs2103.exception;
 
 public class TommyException extends Exception{
     public TommyException(String message) {

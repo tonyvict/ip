@@ -1,11 +1,17 @@
-package cs2103;
+package cs2103.storage;
 
+import cs2103.Deadline;
+import cs2103.Event;
+import cs2103.Task;
+import cs2103.Todo;
+import cs2103.exception.TommyException;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,5 +1,9 @@
 package cs2103;
 
+import cs2103.exception.InvalidCmdException;
+import cs2103.exception.MissingDescriptionException;
+import cs2103.exception.TommyException;
+
 public class Parser {
 
     public static String splitter(String input, int which) throws TommyException {

@@ -1,6 +1,7 @@
 package cs2103;
 
-import java.time.LocalDate;
+import cs2103.exception.TommyException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;

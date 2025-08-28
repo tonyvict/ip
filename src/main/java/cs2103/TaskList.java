@@ -1,5 +1,7 @@
 package cs2103;
 
+import cs2103.exception.TommyException;
+
 public class TaskList {
     private Task[] tasks;
     private int size;
