@@ -15,6 +15,10 @@ public class Deadline extends Task {
         return "D";
     }
 
+    public String getBy() {
+        return by;
+    }
+
     @Override
     public String toString() {
         return String.format("[%s][%s] %s (by: %s)", typeIcon(), statusIcon(), this.getName(), by);

@@ -18,6 +18,13 @@ class Event extends Task {
         return "E";
     }
 
+    public String getFrom() {
+        return from;
+    }
+    public String getTo() {
+        return to;
+    }
+
     @Override
     public String toString() {
         return String.format("[%s][%s] %s (from: %s to: %s)",
