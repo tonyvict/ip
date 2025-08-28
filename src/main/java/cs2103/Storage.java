@@ -126,7 +126,6 @@ public class Storage {
             }
             case "D": {
                 String by = (tasky.length > 3) ? tasky[3] : "";
-                java.time.LocalDateTime dt = java.time.LocalDateTime.parse(by);
                 t = new Deadline(name, by);
                 break;
             }

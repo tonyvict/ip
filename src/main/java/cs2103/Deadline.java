@@ -7,7 +7,6 @@ import java.time.format.DateTimeParseException;
 
 
 
-
 public class Deadline extends Task {
 
     private final LocalDateTime by;
@@ -33,7 +32,7 @@ public class Deadline extends Task {
     }
 
     public String getByString() {
-        return by.toString();
+        return by.format(IN);
     }
 
     @Override
