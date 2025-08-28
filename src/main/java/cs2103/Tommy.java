@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class Tommy {
 
+    private static final String Save_path = "data/tommy.txt";
+    private static final Storage storage = new Storage(Save_path);
+
     private static String splitter(String input, int which) throws TommyException {
 
         if (input == null || input.isEmpty()) {
@@ -87,12 +90,18 @@ public class Tommy {
         return size -1;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TommyException {
+
+
 
         System.out.println("Hello! I'm Tommy\nWhat can I do for you?");
         Scanner sc = new Scanner(System.in);
         Task[] tasks = new Task[100];
-        int size = 0;
+        int size = storage.retrieveSize(tasks);
+        if (size >0) {
+            System.out.println("Loaded " + size + " tasks from memory successfully");
+        }
+
 
         while (true) {
             String input = sc.nextLine();
@@ -110,10 +119,13 @@ public class Tommy {
                 }
             } else if (input.startsWith("mark ")) {
                 marker(tasks, size, input, true);
+                storage.save(tasks, size);
             } else if (input.startsWith("unmark ")) {
                 marker(tasks, size, input, false);
+                storage.save(tasks, size);
             } else if (input.startsWith("delete")) {
                 size = deletor(tasks, size, input);
+                storage.save(tasks, size);
 
             }
 
@@ -130,16 +142,19 @@ public class Tommy {
                                 System.out.println("Got it. I've added this task:");
                                 System.out.println(" " + tasks[i]);
                                 System.out.println("Now you have " + size + " tasks in the list.");
+                                storage.save(tasks, size);
                             } else if (splitter(input, 0).equals("deadline")) {
                                 tasks[i] = new Deadline(splitter(input, 2), deadlineday(splitter(input, 3)));
                                 System.out.println("Got it. I've added this task:");
                                 System.out.println(" " + tasks[i]);
                                 System.out.println("Now you have " + size + " tasks in the list.");
+                                storage.save(tasks, size);
                             } else if (splitter(input, 0).equals("event")) {
                                 tasks[i] = new Event(splitter(input, 2), eventtiming(splitter(input, 3), 0), eventtiming(splitter(input, 3), 1));
                                 System.out.println("Got it. I've added this task:");
                                 System.out.println(" " + tasks[i]);
                                 System.out.println("Now you have " + size + " tasks in the list.");
+                                storage.save(tasks, size);
                             } else {
                                 throw new InvalidCmdException("dun say random bs");
                             }
