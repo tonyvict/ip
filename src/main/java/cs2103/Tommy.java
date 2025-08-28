@@ -40,6 +40,13 @@ public class Tommy {
         return day;
     }
 
+    private static String deadlineRaw(String byPart) {
+        if (byPart == null) return "";
+        int firstSpace = byPart.indexOf(' ');
+        return (firstSpace >= 0) ? byPart.substring(firstSpace + 1).trim() : byPart.trim();
+    }
+
+
     private static String eventtiming (String input, int which) {
         if (input == null) {
             return null;
@@ -144,7 +151,7 @@ public class Tommy {
                                 System.out.println("Now you have " + size + " tasks in the list.");
                                 storage.save(tasks, size);
                             } else if (splitter(input, 0).equals("deadline")) {
-                                tasks[i] = new Deadline(splitter(input, 2), deadlineday(splitter(input, 3)));
+                                tasks[i] = new Deadline(splitter(input, 2), deadlineRaw(splitter(input, 3)));
                                 System.out.println("Got it. I've added this task:");
                                 System.out.println(" " + tasks[i]);
                                 System.out.println("Now you have " + size + " tasks in the list.");
