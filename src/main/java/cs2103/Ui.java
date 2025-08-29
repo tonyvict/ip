@@ -53,6 +53,28 @@ public class Ui {
         System.out.println("Now you have " + size + " tasks in the list.");
     }
 
+    /**
+     * Displays the found tasks that match the search keyword.
+     * 
+     * @param foundTasks Array of tasks that match the search criteria
+     */
+    public void showFoundTasks(Task[] foundTasks) {
+        System.out.println("__________________________________________________________");
+        System.out.println(" Here are the matching tasks in your list:");
+        
+        if (foundTasks.length == 0) {
+            System.out.println(" No tasks found matching your search.");
+        } else {
+            for (int i = 0; i < foundTasks.length; i++) {
+                if (foundTasks[i] != null) {
+                    System.out.printf("%d.%s%n", i + 1, foundTasks[i].toString());
+                }
+            }
+        }
+        
+        System.out.println("_____________________________________________________");
+    }
+
     public void showError(String message) {
         System.out.println("Error: " + message);
     }

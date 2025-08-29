@@ -107,5 +107,31 @@ public class TaskList {
     public boolean isFull() {
         return size >= MAX_TASKS;
     }
+
+    /**
+     * Finds tasks that contain the given keyword in their description.
+     * 
+     * @param keyword The search term to look for in task descriptions
+     * @return Array of matching tasks
+     */
+    public Task[] findTasks(String keyword) {
+        Task[] matchingTasks = new Task[MAX_TASKS];
+        int matchCount = 0;
+        
+        for (int i = 0; i < size; i++) {
+            if (tasks[i] != null && tasks[i].getName().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasks[matchCount] = tasks[i]; //the first task is the first one that matches the keyword
+                matchCount++;
+            }
+        }
+        
+        // to create a properly sized array with only the matching tasks,minus all the nulls
+        Task[] result = new Task[matchCount];
+        for (int i = 0; i < matchCount; i++) {
+            result[i] = matchingTasks[i];
+        }
+        
+        return result;
+    }
 }
 

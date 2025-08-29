@@ -82,6 +82,10 @@ public class Tommy {
                 size = taskList.getSize();
                 ui.showDeletedTask(deletedTask, size);
                 storage.save(taskList.getTasks(), size);
+            } else if (Parser.isFindCommand(input)) {
+                String keyword = Parser.getFindKeyword(input);
+                Task[] foundTasks = taskList.findTasks(keyword);
+                ui.showFoundTasks(foundTasks);
             } else {
                 try {
                     if (Parser.isTodoCommand(input)) {

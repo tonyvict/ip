@@ -101,5 +101,28 @@ public class Parser {
     public static boolean isEventCommand(String input) throws TommyException {
         return splitter(input, 0).equals("event");
     }
+
+    /**
+     * Checks if the input is a find command.
+     * 
+     * @param input The user input string
+     * @return true if the input starts with "find ", false otherwise
+     */
+    public static boolean isFindCommand(String input) {
+        return input.startsWith("find ");
+    }
+
+    /**
+     * Extracts the search keyword from a find command.
+     * 
+     * @param input The find command input (e.g., "find book")
+     * @return The search keyword
+     */
+    public static String getFindKeyword(String input) {
+        if (input.startsWith("find ")) {
+            return input.substring(5).trim();
+        }
+        return "";
+    }
 }
 
