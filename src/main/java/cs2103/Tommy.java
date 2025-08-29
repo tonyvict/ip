@@ -5,13 +5,46 @@ import cs2103.exception.MissingDescriptionException;
 import cs2103.exception.TommyException;
 import cs2103.storage.Storage;
 
+/**
+ * Personal task management application supporting Todo, Deadline, and Event tasks.
+ * Provides command-line interface for adding, marking, listing, and deleting tasks.
+ * Automatically saves tasks to persistent storage.
+ * 
+ * @author Tony
+ * @version 1.0
+ */
 public class Tommy {
 
+    /** File path for task storage */
     private static final String Save_path = "data/tommy.txt";
+    
+    /** Storage component for persisting tasks */
     private static final Storage storage = new Storage(Save_path);
+    
+    /** User interface component */
     private static final Ui ui = new Ui();
+    
+    /** List containing all user tasks */
     private static TaskList taskList;
 
+    /**
+     * Main entry point for the Tommy application.
+     * 
+     * <p>Initializes the app, loads saved tasks, and processes user commands
+     * until the user chooses to exit. Supported commands:</p>
+     * <ul>
+     *   <li><code>todo [description]</code> - Add simple task</li>
+     *   <li><code>deadline [description] /by [datetime]</code> - Add task with deadline</li>
+     *   <li><code>event [description] /from [start] /to [end]</code> - Add event task</li>
+     *   <li><code>mark/unmark [number]</code> - Change task completion status</li>
+     *   <li><code>delete [number]</code> - Remove task</li>
+     *   <li><code>list</code> - Show all tasks</li>
+     *   <li><code>bye</code> - Exit application</li>
+     * </ul>
+     * 
+     * @param args Command line arguments (not used)
+     * @throws TommyException If there's an error during task processing
+     */
     public static void main(String[] args) throws TommyException {
 
         ui.showWelcome();
