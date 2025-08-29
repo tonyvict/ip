@@ -3,10 +3,9 @@ package cs2103;
 /**
  * Abstract base class for tasks in the Tommy task management system.
  * 
- * 
  * <p>Display format: [Type][Status] Description</p>
  * 
- * @author  Tony
+ * @author Tony
  * @version 1.0
  * @see Todo
  * @see Deadline
@@ -73,7 +72,9 @@ public abstract class Task {
     }
 
     /**
-
+     * Gets visual indicator for task type.
+     * Must be implemented by subclasses.
+     * 
      * @return Single character representing task type
      */
     public abstract String typeIcon();

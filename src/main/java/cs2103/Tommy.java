@@ -16,10 +16,13 @@ import cs2103.storage.Storage;
 public class Tommy {
 
     /** File path for task storage */
-    private static final String Save_path = "data/tommy.txt";
+    private static final String SAVE_PATH = "data/tommy.txt";
+    
+    /** Maximum number of tasks that can be stored */
+    private static final int MAX_TASKS = 100;
     
     /** Storage component for persisting tasks */
-    private static final Storage storage = new Storage(Save_path);
+    private static final Storage storage = new Storage(SAVE_PATH);
     
     /** User interface component */
     private static final Ui ui = new Ui();
@@ -48,7 +51,7 @@ public class Tommy {
     public static void main(String[] args) throws TommyException {
 
         ui.showWelcome();
-        Task[] tasks = new Task[100];
+        Task[] tasks = new Task[MAX_TASKS];
         int size = storage.retrieveSize(tasks);
         taskList = new TaskList(tasks, size);
         ui.showLoadedTasks(size);
@@ -73,8 +76,8 @@ public class Tommy {
             } else if (Parser.isUnmarkCommand(input)) {
                 taskList.markTask(input, false);
                 Task unmarkedTask = taskList.getTask(Parser.parseNo(input) - 1);
-                ui.showMarkedTask(unmarkedTask, false);
                 size = taskList.getSize();
+                ui.showMarkedTask(unmarkedTask, false);
                 storage.save(taskList.getTasks(), size);
             } else if (Parser.isDeleteCommand(input)) {
                 Task deletedTask = taskList.getTask(Parser.parseNo(input) - 1);
