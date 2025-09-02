@@ -54,7 +54,7 @@ public class Ui {
     }
 
     /**
-     * Displays the found tasks that match the search keyword.
+     * Displays the found tasks that match the search keywords.
      * 
      * @param foundTasks Array of tasks that match the search criteria
      */
