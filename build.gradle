@@ -2,6 +2,12 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'checkstyle'
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 repositories {
@@ -28,7 +34,7 @@ test {
 }
 
 application {
-    mainClass.set("cs2103.Tommy")
+    mainClass.set("csproject.Tommy")
 }
 
 shadowJar {
@@ -38,4 +44,8 @@ shadowJar {
 
 run{
     standardInput = System.in
+}
+
+checkstyle {
+    toolVersion = '11.0.0'
 }

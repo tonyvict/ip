@@ -1,13 +1,19 @@
-package cs2103;
+package csproject;
 
-import cs2103.exception.TommyException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import csproject.exception.TommyException;
+// NOTE: No imports for Task, TaskList, Todo since they are in the same package
 
 class TaskListTest {
 
-    @Test //test the adding of new tasks and the bumping of sixe
+    @Test // test the adding of new tasks and the bumping of size
     void addTask() throws TommyException {
 
         Task[] backing = new Task[100];
@@ -16,10 +22,8 @@ class TaskListTest {
 
         TaskList list = new TaskList(backing, 2);
 
-
         Task b = new Todo("B");
         list.addTask(b);
-
 
         assertEquals(3, list.getSize(), "Size should increment after add");
         assertSame(backing[1], b, "New task should be placed in the first null slot");
@@ -28,19 +32,20 @@ class TaskListTest {
         assertEquals("C", ((Todo) backing[2]).getName());
     }
 
-    @Test //correct exception and message
+    @Test // correct exception and message
     void addTask_whenFull_throwsTommyException() {
         Task[] full = new Task[100];
-        for (int i = 0; i < full.length; i++) full[i] = new Todo("T" + i);
+        for (int i = 0; i < full.length; i++) {
+            full[i] = new Todo("T" + i);
+        }
         TaskList list = new TaskList(full, 100);
 
-        TommyException ex = assertThrows(TommyException.class,
-                () -> list.addTask(new Todo("overflow")));
+        TommyException ex = assertThrows(TommyException.class, () -> list.addTask(new Todo("overflow")));
         assertEquals("Task list is full", ex.getMessage());
         assertEquals(100, list.getSize(), "Size should remain at capacity");
     }
 
-    @Test //check bounds
+    @Test // check bounds
     void getTask_returnsTaskForValidIndex_elseNull() {
         Task[] arr = new Task[100];
         arr[0] = new Todo("only");
