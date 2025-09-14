@@ -5,49 +5,57 @@ plugins {
     id 'checkstyle'
     id 'org.openjfx.javafxplugin' version '0.1.0'
 }
+
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
 }
 
-repositories {
-    mavenCentral()
+repositories { mavenCentral() }
+
+
+ext {
+    javaFxVersion = '17.0.7'
+}
+
+
+def osClassifier() {
+    def os = org.gradle.internal.os.OperatingSystem.current()
+    if (os.isWindows()) return 'win'
+    if (os.isMacOsX())  return 'mac'
+    return 'linux'
 }
 
 dependencies {
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
-    String javaFxVersion = '17.0.7'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly   'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'linux'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'linux'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
+    // ---- JavaFX modules you actually use (controls/fxml/graphics) ----
+    implementation "org.openjfx:javafx-base:${javaFxVersion}:${osClassifier()}"
+    implementation "org.openjfx:javafx-graphics:${javaFxVersion}:${osClassifier()}"
+    implementation "org.openjfx:javafx-controls:${javaFxVersion}:${osClassifier()}"
+    implementation "org.openjfx:javafx-fxml:${javaFxVersion}:${osClassifier()}"
 }
+
+
 javafx {
-    version = '21.0.3'            // works great on Java 17
-    modules = ['javafx.controls']
+    version = javaFxVersion
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics']
 }
 
 application {
+    // Your launcher class
     mainClass = 'csproject.gui.Launcher'
+}
+
+
+jar {
+    manifest { attributes 'Main-Class': application.mainClass }
 }
 
 test {
     useJUnitPlatform()
-
     testLogging {
         events "passed", "skipped", "failed"
-
         showExceptions true
         exceptionFormat "full"
         showCauses true
@@ -62,10 +70,8 @@ shadowJar {
     archiveClassifier = null
 }
 
-run{
+run {
     standardInput = System.in
 }
 
-checkstyle {
-    toolVersion = '11.0.0'
-}
+checkstyle { toolVersion = '11.0.0' }
