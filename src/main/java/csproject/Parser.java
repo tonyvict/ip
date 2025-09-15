@@ -21,11 +21,15 @@ public class Parser {
      * @return Extracted part of the input
      * @throws TommyException If input is invalid or missing required parts
      */
+    @SuppressWarnings("checkstyle:WhitespaceAfter")
     public static String splitter(String input, int which) throws TommyException {
+        assert which >= 0 && which <= 3 : "Invalid 'which' index for spliiter";
         if (input == null || input.isEmpty()) {
             throw new InvalidCmdException("Bro, i look like what to u, type smt first eh");
         }
         String[] parts = input.split("\\s+", 2); //first split to get the name
+        assert parts.length > 0 : "Splitter should always produce at least one token";
+
         if (which == 0) {
             return parts[0]; //type of task
         }
@@ -38,6 +42,7 @@ public class Parser {
         }
 
         String[] description = parts[1].split("/", 2);
+        assert description.length > 0 : "Description must contain at least one token";
         if (which == 2) {
             return description[0]; //task name
         }
@@ -105,6 +110,7 @@ public class Parser {
      * @return Parsed task number, or null if invalid format
      */
     public static Integer parseNo(String input) {
+        assert input != null : "parseNo input should not be null";
         String[] parts = input.split(" "); //identifying
         if (parts.length != 2) {
             return null;
