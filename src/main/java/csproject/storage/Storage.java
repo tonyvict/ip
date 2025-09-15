@@ -25,6 +25,12 @@ import csproject.exception.TommyException;
  */
 public class Storage {
 
+    private static final String DELIM = " | ";
+    private static final String DELIM_REGEX = "\\s*\\|\\s*";
+    private static final String MARKED = "1";
+    private static final String UNMARKED = "0";
+
+
     private final Path filePath; //path is a java object that represents a location in my com
 
     /**
@@ -98,12 +104,12 @@ public class Storage {
 
         ensureSafe(t.getName());
 
-        String head = t.typeIcon() + " | " + (t.isMarked() ? "1" : "0") + " | " + t.getName();
+        String head = t.typeIcon() + DELIM + (t.isMarked() ? MARKED : UNMARKED) + DELIM + t.getName();
         if (t instanceof Deadline) {
-            head += " | " + ((Deadline) t).getByString();
+            head += DELIM + ((Deadline) t).getByString();
         }
         if (t instanceof Event) {
-            head += " | " + ((Event) t).getFrom() + " | " + ((Event) t).getTo();
+            head += DELIM + ((Event) t).getFrom() + DELIM + ((Event) t).getTo();
         }
 
         return head;
@@ -160,13 +166,13 @@ public class Storage {
         }
 
 
-        String[] tasky = line.split("\\s*\\|\\s*", -1);
+        String[] tasky = line.split(DELIM_REGEX, -1);
         if (tasky.length < 3) {
             throw new TommyException("Corrupted save line: " + line);
         }
 
         String kind = tasky[0]; // "T","D","E"
-        boolean done = "1".equals(tasky[1]); // 1 done 0 not done
+        boolean done = MARKED.equals(tasky[1]); // 1 done 0 not done
         String name = tasky[2];
 
         Task t;
