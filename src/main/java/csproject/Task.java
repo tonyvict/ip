@@ -15,34 +15,34 @@ package csproject;
 public abstract class Task {
 
     /** Task description or name */
-    private final String fullname;
+    private final String description;
 
     /** Task completion status (true = completed, false = pending) */
-    private boolean status;
+    private boolean completed;
 
     /**
      * Creates a new task with the given description.
      * New tasks start as incomplete by default.
      *
-     * @param fullname The task description
+     * @param description The task description
      */
-    Task(String fullname) {
-        this.fullname = fullname;
-        this.status = false;
+    Task(String description) {
+        this.description = description;
+        this.completed = false;
     }
 
     /**
      * Marks this task as completed.
      */
     public void mark() {
-        this.status = true;
+        this.completed = true;
     }
 
     /**
      * Marks this task as incomplete/pending.
      */
     public void unmark() {
-        this.status = false;
+        this.completed = false;
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class Task {
      * @return true if completed, false if pending
      */
     public boolean isMarked() {
-        return this.status;
+        return this.completed;
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class Task {
      * @return The task description
      */
     public String getName() {
-        return this.fullname;
+        return this.description;
     }
 
     /**
@@ -69,7 +69,7 @@ public abstract class Task {
      * @return "X" if completed, " " (space) if pending
      */
     public String statusIcon() {
-        return status ? "X" : " ";
+        return completed ? "X" : " ";
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class Task {
      */
     @Override
     public String toString() {
-        return String.format("[%s][%s] %s", typeIcon(), statusIcon(), fullname);
+        return String.format("[%s][%s] %s", typeIcon(), statusIcon(), description);
     }
 }
 
