@@ -1,10 +1,13 @@
 package csproject;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Abstract base class for tasks in the Tommy task management system.
  *
  *
- * <p>Display format: [Type][Status] Description</p>
+ * <p>Display format: [Type][Status] Description #tag1 #tag2</p>
  *
  * @author  Tony
  * @version 1.0
@@ -20,6 +23,9 @@ public abstract class Task {
     /** Task completion status (true = completed, false = pending) */
     private boolean completed;
 
+    /** Set of tags associated with this task */
+    private final Set<String> tags;
+
     /**
      * Creates a new task with the given description.
      * New tasks start as incomplete by default.
@@ -29,6 +35,7 @@ public abstract class Task {
     Task(String description) {
         this.description = description;
         this.completed = false;
+        this.tags = new HashSet<>();
     }
 
     /**
@@ -80,14 +87,69 @@ public abstract class Task {
     public abstract String typeIcon();
 
     /**
+     * Adds a tag to this task.
+     *
+     * @param tag The tag to add
+     */
+    public void addTag(String tag) {
+        if (tag != null && !tag.trim().isEmpty()) {
+            this.tags.add(tag.trim());
+        }
+    }
+
+    /**
+     * Removes a tag from this task.
+     *
+     * @param tag The tag to remove
+     */
+    public void removeTag(String tag) {
+        this.tags.remove(tag);
+    }
+
+    /**
+     * Gets all tags associated with this task.
+     *
+     * @return Set of tags
+     */
+    public Set<String> getTags() {
+        return new HashSet<>(this.tags);
+    }
+
+    /**
+     * Checks if this task has a specific tag.
+     *
+     * @param tag The tag to check for
+     * @return True if task has the tag, false otherwise
+     */
+    public boolean hasTag(String tag) {
+        return this.tags.contains(tag);
+    }
+
+    /**
+     * Gets formatted string of all tags.
+     *
+     * @return String representation of tags with # prefix
+     */
+    public String getTagsString() {
+        if (tags.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String tag : tags) {
+            sb.append(" #").append(tag);
+        }
+        return sb.toString();
+    }
+
+    /**
      * Returns formatted string representation of the task.
-     * Format: [Type][Status] Description
+     * Format: [Type][Status] Description #tag1 #tag2
      *
      * @return Formatted task string
      */
     @Override
     public String toString() {
-        return String.format("[%s][%s] %s", typeIcon(), statusIcon(), description);
+        return String.format("[%s][%s] %s%s", typeIcon(), statusIcon(), description, getTagsString());
     }
 }
 

@@ -219,5 +219,39 @@ public class TaskList {
 
         return result;
     }
+
+    /**
+     * Adds a tag to a specific task.
+     *
+     * @param taskNumber The task number (1-based)
+     * @param tag The tag to add
+     * @throws TommyException If task number is invalid
+     */
+    public void addTagToTask(int taskNumber, String tag) throws TommyException {
+        if (taskNumber < 1 || taskNumber > size) {
+            throw new TommyException("Invalid task number");
+        }
+        Task task = tasks[taskNumber - 1];
+        if (task != null) {
+            task.addTag(tag);
+        }
+    }
+
+    /**
+     * Removes a tag from a specific task.
+     *
+     * @param taskNumber The task number (1-based)
+     * @param tag The tag to remove
+     * @throws TommyException If task number is invalid
+     */
+    public void removeTagFromTask(int taskNumber, String tag) throws TommyException {
+        if (taskNumber < 1 || taskNumber > size) {
+            throw new TommyException("Invalid task number");
+        }
+        Task task = tasks[taskNumber - 1];
+        if (task != null) {
+            task.removeTag(tag);
+        }
+    }
 }
 

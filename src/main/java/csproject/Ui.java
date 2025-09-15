@@ -121,6 +121,22 @@ public class Ui {
     }
 
     /**
+     * Displays a message when a tag is added or removed from a task.
+     *
+     * @param task The task that was tagged/untagged
+     * @param tag The tag that was added/removed
+     * @param added True if tag was added, false if removed
+     */
+    public void showTaggedTask(Task task, String tag, boolean added) {
+        if (added) {
+            System.out.println("Nice! I've added the tag '" + tag + "' to this task:");
+        } else {
+            System.out.println("OK, I've removed the tag '" + tag + "' from this task:");
+        }
+        System.out.println(" " + task);
+    }
+
+    /**
      * Displays an error message to the user.
      *
      * @param message Error message to display

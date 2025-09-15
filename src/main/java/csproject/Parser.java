@@ -224,5 +224,53 @@ public class Parser {
         }
         return "";
     }
+
+    /**
+     * Checks if the input is a tag command.
+     *
+     * @param input The user input string
+     * @return True if input starts with "tag ", false otherwise
+     */
+    public static boolean isTagCommand(String input) {
+        return input.startsWith("tag ");
+    }
+
+    /**
+     * Checks if the input is an untag command.
+     *
+     * @param input The user input string
+     * @return True if input starts with "untag ", false otherwise
+     */
+    public static boolean isUntagCommand(String input) {
+        return input.startsWith("untag ");
+    }
+
+    /**
+     * Extracts task number and tag from tag/untag command.
+     *
+     * @param input The tag/untag command input (e.g., "tag 1 fun")
+     * @return Array with [taskNumber, tag] or null if invalid format
+     */
+    public static String[] parseTagCommand(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return null;
+        }
+
+        String[] parts = input.trim().split("\\s+", 3);
+        if (parts.length < 3) {
+            return null;
+        }
+
+        try {
+            int taskNumber = Integer.parseInt(parts[1]);
+            String tag = parts[2].trim();
+            if (tag.isEmpty()) {
+                return null;
+            }
+            return new String[]{String.valueOf(taskNumber), tag};
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 }
 

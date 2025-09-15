@@ -112,6 +112,11 @@ public class Storage {
             head += DELIM + ((Event) t).getFrom() + DELIM + ((Event) t).getTo();
         }
 
+        // Add tags
+        if (!t.getTags().isEmpty()) {
+            head += DELIM + String.join(",", t.getTags());
+        }
+
         return head;
 
     }
@@ -198,7 +203,38 @@ public class Storage {
         if (done) {
             t.mark();
         }
+
+        // Load tags
+        int tagsIndex = getTagsIndex(kind);
+        if (tasky.length > tagsIndex && !tasky[tagsIndex].isEmpty()) {
+            String[] tagArray = tasky[tagsIndex].split(",");
+            for (String tag : tagArray) {
+                if (!tag.trim().isEmpty()) {
+                    t.addTag(tag.trim());
+                }
+            }
+        }
+
         return t;
+    }
+
+    /**
+     * Gets the index where tags are stored based on task type.
+     *
+     * @param kind Task type ("T", "D", "E")
+     * @return Index where tags are stored
+     */
+    private int getTagsIndex(String kind) {
+        switch (kind) {
+        case "T":
+            return 3; // Todo: type, status, name, tags
+        case "D":
+            return 4; // Deadline: type, status, name, by, tags
+        case "E":
+            return 5; // Event: type, status, name, from, to, tags
+        default:
+            return 3;
+        }
     }
 }
 

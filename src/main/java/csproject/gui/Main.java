@@ -166,6 +166,30 @@ public class Main extends Application {
                 String keyword = Parser.getFindKeyword(input);
                 Task[] found = taskList.findTasks(keyword);
                 return buildFoundMessage(found);
+            } else if (Parser.isTagCommand(input)) {
+                String[] tagData = Parser.parseTagCommand(input);
+                if (tagData != null) {
+                    int taskNumber = Integer.parseInt(tagData[0]);
+                    String tag = tagData[1];
+                    taskList.addTagToTask(taskNumber, tag);
+                    Task taggedTask = taskList.getTask(taskNumber - 1);
+                    storage.save(taskList.getTasks(), size);
+                    return "Nice! I've added the tag '" + tag + "' to this task:\n  " + taggedTask;
+                } else {
+                    return "Invalid tag command format. Use: tag [number] [tag]";
+                }
+            } else if (Parser.isUntagCommand(input)) {
+                String[] tagData = Parser.parseTagCommand(input);
+                if (tagData != null) {
+                    int taskNumber = Integer.parseInt(tagData[0]);
+                    String tag = tagData[1];
+                    taskList.removeTagFromTask(taskNumber, tag);
+                    Task untaggedTask = taskList.getTask(taskNumber - 1);
+                    storage.save(taskList.getTasks(), size);
+                    return "OK, I've removed the tag '" + tag + "' from this task:\n  " + untaggedTask;
+                } else {
+                    return "Invalid untag command format. Use: untag [number] [tag]";
+                }
             } else if (Parser.isTodoCommand(input)) {
                 taskList.addTodo(input);
                 size = taskList.getSize();

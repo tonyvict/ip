@@ -37,6 +37,8 @@ public class Tommy {
      *   <li><code>event [description] /from [start] /to [end]</code> - Add event task</li>
      *   <li><code>mark/unmark [number]</code> - Change task completion status</li>
      *   <li><code>delete [number]</code> - Remove task</li>
+     *   <li><code>tag [number] [tag]</code> - Add tag to task</li>
+     *   <li><code>untag [number] [tag]</code> - Remove tag from task</li>
      *   <li><code>list</code> - Show all tasks</li>
      *   <li><code>bye</code> - Exit application</li>
      * </ul>
@@ -85,6 +87,30 @@ public class Tommy {
                 String keyword = Parser.getFindKeyword(input);
                 Task[] foundTasks = taskList.findTasks(keyword);
                 ui.showFoundTasks(foundTasks);
+            } else if (Parser.isTagCommand(input)) {
+                String[] tagData = Parser.parseTagCommand(input);
+                if (tagData != null) {
+                    int taskNumber = Integer.parseInt(tagData[0]);
+                    String tag = tagData[1];
+                    taskList.addTagToTask(taskNumber, tag);
+                    Task taggedTask = taskList.getTask(taskNumber - 1);
+                    ui.showTaggedTask(taggedTask, tag, true);
+                    storage.save(taskList.getTasks(), size);
+                } else {
+                    ui.showError("Invalid tag command format. Use: tag [number] [tag]");
+                }
+            } else if (Parser.isUntagCommand(input)) {
+                String[] tagData = Parser.parseTagCommand(input);
+                if (tagData != null) {
+                    int taskNumber = Integer.parseInt(tagData[0]);
+                    String tag = tagData[1];
+                    taskList.removeTagFromTask(taskNumber, tag);
+                    Task untaggedTask = taskList.getTask(taskNumber - 1);
+                    ui.showTaggedTask(untaggedTask, tag, false);
+                    storage.save(taskList.getTasks(), size);
+                } else {
+                    ui.showError("Invalid untag command format. Use: untag [number] [tag]");
+                }
             } else {
                 try {
                     if (Parser.isTodoCommand(input)) {
