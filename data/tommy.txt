@@ -1,5 +1,5 @@
-T | 0 | kill polly | fun
 T | 0 | kill polly
+T | 0 | kill polly | urgent
 T | 0 | eat apple #fun
 T | 0 | eat apple
 T | 0 | eat apple

@@ -1,6 +1,5 @@
 package csproject;
 
-import csproject.exception.InvalidCmdException;
 import csproject.exception.TommyException;
 import csproject.storage.Storage;
 
@@ -47,95 +46,33 @@ public class Tommy {
      * @throws TommyException If there's an error during task processing
      */
     public static void main(String[] args) throws TommyException {
-
+        // Initialize application components
         ui.showWelcome();
         Task[] tasks = new Task[100];
         int size = storage.retrieveSize(tasks);
         taskList = new TaskList(tasks, size);
         ui.showLoadedTasks(size);
 
+        // Create command handler
+        CommandHandler commandHandler = new CommandHandler(taskList, ui, storage, size);
+
+        // Main application loop
         while (true) {
             String input = ui.getUserInput();
             if (input == null) {
                 break;
             }
 
-            if (Parser.isByeCommand(input)) {
-                ui.showGoodbye();
-                break;
-            } else if (Parser.isListCommand(input)) {
-                ui.showTaskList(taskList.getTasks(), size);
-            } else if (Parser.isMarkCommand(input)) {
-                taskList.markTask(input, true);
-                Task markedTask = taskList.getTask(Parser.parseNo(input) - 1);
-                ui.showMarkedTask(markedTask, true);
-                size = taskList.getSize();
-                storage.save(taskList.getTasks(), size);
-            } else if (Parser.isUnmarkCommand(input)) {
-                taskList.markTask(input, false);
-                Task unmarkedTask = taskList.getTask(Parser.parseNo(input) - 1);
-                ui.showMarkedTask(unmarkedTask, false);
-                size = taskList.getSize();
-                storage.save(taskList.getTasks(), size);
-            } else if (Parser.isDeleteCommand(input)) {
-                Task deletedTask = taskList.getTask(Parser.parseNo(input) - 1);
-                taskList.deleteTask(input);
-                size = taskList.getSize();
-                ui.showDeletedTask(deletedTask, size);
-                storage.save(taskList.getTasks(), size);
-            } else if (Parser.isFindCommand(input)) {
-                String keyword = Parser.getFindKeyword(input);
-                Task[] foundTasks = taskList.findTasks(keyword);
-                ui.showFoundTasks(foundTasks);
-            } else if (Parser.isTagCommand(input)) {
-                String[] tagData = Parser.parseTagCommand(input);
-                if (tagData != null) {
-                    int taskNumber = Integer.parseInt(tagData[0]);
-                    String tag = tagData[1];
-                    taskList.addTagToTask(taskNumber, tag);
-                    Task taggedTask = taskList.getTask(taskNumber - 1);
-                    ui.showTaggedTask(taggedTask, tag, true);
-                    storage.save(taskList.getTasks(), size);
-                } else {
-                    ui.showError("Invalid tag command format. Use: tag [number] [tag]");
+            try {
+                boolean shouldContinue = commandHandler.processCommand(input);
+                if (!shouldContinue) {
+                    break;
                 }
-            } else if (Parser.isUntagCommand(input)) {
-                String[] tagData = Parser.parseTagCommand(input);
-                if (tagData != null) {
-                    int taskNumber = Integer.parseInt(tagData[0]);
-                    String tag = tagData[1];
-                    taskList.removeTagFromTask(taskNumber, tag);
-                    Task untaggedTask = taskList.getTask(taskNumber - 1);
-                    ui.showTaggedTask(untaggedTask, tag, false);
-                    storage.save(taskList.getTasks(), size);
-                } else {
-                    ui.showError("Invalid untag command format. Use: untag [number] [tag]");
-                }
-            } else {
-                try {
-                    if (Parser.isTodoCommand(input)) {
-                        taskList.addTodo(input);
-                        ui.showAddedTask(taskList.getTasks()[size], size + 1);
-                        size = taskList.getSize();
-                        storage.save(taskList.getTasks(), size);
-                    } else if (Parser.isDeadlineCommand(input)) {
-                        taskList.addDeadline(input);
-                        ui.showAddedTask(taskList.getTasks()[size], size + 1);
-                        size = taskList.getSize();
-                        storage.save(taskList.getTasks(), size);
-                    } else if (Parser.isEventCommand(input)) {
-                        taskList.addEvent(input);
-                        ui.showAddedTask(taskList.getTasks()[size], size + 1);
-                        size = taskList.getSize();
-                        storage.save(taskList.getTasks(), size);
-                    } else {
-                        throw new InvalidCmdException("dun say random bs");
-                    }
-                } catch (TommyException e) {
-                    ui.showError(e.getMessage());
-                }
+            } catch (TommyException e) {
+                ui.showError(e.getMessage());
             }
         }
+
         ui.close();
     }
 }
