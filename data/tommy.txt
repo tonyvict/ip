@@ -1,4 +1,4 @@
-T | 0 | kill polly
+T | 0 | kill polly | stupid
 T | 0 | kill polly | urgent
 T | 0 | eat apple #fun
 T | 0 | eat apple

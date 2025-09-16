@@ -55,42 +55,58 @@ public class Main extends Application {
         tommyImage = safeLoad("/images/DaTommy.png");
 
         scrollPane = new ScrollPane();
-        dialogContainer = new VBox(10);
-        dialogContainer.setPadding(new Insets(10));
+        dialogContainer = new VBox(8);
+        dialogContainer.setPadding(new Insets(12));
+        dialogContainer.setStyle("-fx-background-color: #FAFAFA;");
         scrollPane.setContent(dialogContainer);
+        scrollPane.setStyle("-fx-background-color: #FAFAFA; -fx-border-color: #E0E0E0; -fx-border-width: 1;");
 
         userInput = new TextField();
+        userInput.setPromptText("Type your command here...");
+        userInput.setStyle("-fx-background-color: white; -fx-border-color: #E0E0E0; "
+                + "-fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8 12;");
+
         sendButton = new Button("Send");
+        sendButton.setStyle("-fx-background-color: #1976D2; -fx-text-fill: white; "
+                + "-fx-background-radius: 6; -fx-padding: 8 16; -fx-font-weight: bold;");
+        sendButton.setOnMouseEntered(e -> sendButton.setStyle("-fx-background-color: #1565C0; "
+                + "-fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 16; -fx-font-weight: bold;"));
+        sendButton.setOnMouseExited(e -> sendButton.setStyle("-fx-background-color: #1976D2; "
+                + "-fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 16; -fx-font-weight: bold;"));
 
         AnchorPane root = new AnchorPane();
+        root.setStyle("-fx-background-color: #FAFAFA;");
         root.getChildren().addAll(scrollPane, userInput, sendButton);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Tommy");
-        stage.setResizable(false);
-        stage.setMinHeight(600.0);
-        stage.setMinWidth(400.0);
+        stage.setTitle("Tommy - Task Manager");
+        stage.setResizable(true);
+        stage.setMinHeight(500.0);
+        stage.setMinWidth(450.0);
+        stage.setWidth(500.0);
+        stage.setHeight(650.0);
 
-        root.setPrefSize(400.0, 600.0);
-        scrollPane.setPrefSize(385, 535);
+        // Make components responsive to window resizing
+        scrollPane.prefWidthProperty().bind(root.widthProperty().subtract(2));
+        scrollPane.prefHeightProperty().bind(root.heightProperty().subtract(60));
+        userInput.prefWidthProperty().bind(root.widthProperty().subtract(80));
+        sendButton.prefWidthProperty().bind(root.widthProperty().divide(8));
+
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setFitToWidth(true);
         scrollPane.setVvalue(1.0);
 
         dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
 
-        userInput.setPrefWidth(325.0);
-        sendButton.setPrefWidth(55.0);
-
         AnchorPane.setTopAnchor(scrollPane, 1.0);
         AnchorPane.setLeftAnchor(scrollPane, 1.0);
         AnchorPane.setRightAnchor(scrollPane, 1.0);
-        AnchorPane.setLeftAnchor(userInput, 1.0);
-        AnchorPane.setBottomAnchor(userInput, 1.0);
-        AnchorPane.setBottomAnchor(sendButton, 1.0);
-        AnchorPane.setRightAnchor(sendButton, 1.0);
+        AnchorPane.setLeftAnchor(userInput, 8.0);
+        AnchorPane.setBottomAnchor(userInput, 8.0);
+        AnchorPane.setBottomAnchor(sendButton, 8.0);
+        AnchorPane.setRightAnchor(sendButton, 8.0);
 
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
 
@@ -126,7 +142,16 @@ public class Main extends Application {
 
         dialogContainer.getChildren().add(DialogBox.getUserDialog(input, userImage));
         String reply = processInput(input);
-        dialogContainer.getChildren().add(DialogBox.getTommyDialog(reply, tommyImage));
+
+        // Check if the reply is an error message
+        boolean isError = reply.startsWith("Error:") || reply.contains("dun say random bs")
+                || reply.contains("Invalid") || reply.contains("InvalidCmdException");
+
+        if (isError) {
+            dialogContainer.getChildren().add(DialogBox.getTommyErrorDialog(reply, tommyImage));
+        } else {
+            dialogContainer.getChildren().add(DialogBox.getTommyDialog(reply, tommyImage));
+        }
 
         if (Parser.isByeCommand(input)) {
             userInput.setDisable(true);
