@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -55,5 +56,15 @@ class TaskListTest {
         assertNull(list.getTask(-1), "Negative index should return null");
         assertNull(list.getTask(1), "Index == size should return null");
         assertNull(list.getTask(50), "Far out-of-bounds should return null");
+    }
+
+    @Test // test tagging functionality
+    void addTagToTask_addsTagCorrectly() throws TommyException {
+        Task[] arr = new Task[100];
+        arr[0] = new Todo("Test task");
+        TaskList list = new TaskList(arr, 1);
+
+        list.addTagToTask(1, "urgent");
+        assertTrue(arr[0].hasTag("urgent"));
     }
 }
