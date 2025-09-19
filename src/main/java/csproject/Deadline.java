@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException;
 import csproject.exception.TommyException;
 
 /**
- * Task with a specific due date and time.
+ * Task with a specific due date and time, one of the 3 tasks types.
  * <p>Input format: yyyy-MM-dd HHmm (e.g., "2024-12-25 2359")
  * Display format: [D][Status] Description (by: MMM dd yyyy HHmm)</p>
  *
