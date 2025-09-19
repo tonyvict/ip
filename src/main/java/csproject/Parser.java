@@ -7,6 +7,7 @@ import csproject.exception.TommyException;
 /**
  * Utility class for parsing user input commands and extracting relevant information.
  * Handles command validation and data extraction for the Tommy task management system.
+ * To handle splitting of input strings.
  *
  * @author Tony
  * @version 1.0
