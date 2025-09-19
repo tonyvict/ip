@@ -1,7 +1,7 @@
 package csproject;
 
 /**
- * Simple task without time constraints.
+ * Simple task without time constraints, no additional details.
  *
  * <p>Display format: [T][Status] Description</p>
  *
