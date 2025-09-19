@@ -5,7 +5,7 @@ import java.util.Set;
 
 /**
  * Abstract base class for tasks in the Tommy task management system.
- *
+ * Inheritance to other subclasses.
  *
  * <p>Display format: [Type][Status] Description #tag1 #tag2</p>
  *
