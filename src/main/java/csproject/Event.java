@@ -1,7 +1,7 @@
 package csproject;
 
 /**
- * Task that occurs during a specific time period.
+ * Task that occurs during a specific time period, one of the 3 tasks available.
  * <p>Display format: [E][Status] Description (from: Start to: End)</p>
  *
  * @author Tony
