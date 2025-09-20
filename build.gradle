@@ -29,12 +29,29 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly   'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 
-    // ---- JavaFX modules you actually use (controls/fxml/graphics) ----
-    implementation "org.openjfx:javafx-base:${javaFxVersion}:${osClassifier()}"
-    implementation "org.openjfx:javafx-graphics:${javaFxVersion}:${osClassifier()}"
-    implementation "org.openjfx:javafx-controls:${javaFxVersion}:${osClassifier()}"
-    implementation "org.openjfx:javafx-fxml:${javaFxVersion}:${osClassifier()}"
+    // JavaFX base modules
+    implementation "org.openjfx:javafx-base:${javaFxVersion}"
+    implementation "org.openjfx:javafx-controls:${javaFxVersion}"
+    implementation "org.openjfx:javafx-fxml:${javaFxVersion}"
+    implementation "org.openjfx:javafx-graphics:${javaFxVersion}"
+
+    // Add platform-specific natives for all OSes
+    runtimeOnly "org.openjfx:javafx-base:${javaFxVersion}:win"
+    runtimeOnly "org.openjfx:javafx-controls:${javaFxVersion}:win"
+    runtimeOnly "org.openjfx:javafx-fxml:${javaFxVersion}:win"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:win"
+
+    runtimeOnly "org.openjfx:javafx-base:${javaFxVersion}:mac"
+    runtimeOnly "org.openjfx:javafx-controls:${javaFxVersion}:mac"
+    runtimeOnly "org.openjfx:javafx-fxml:${javaFxVersion}:mac"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:mac"
+
+    runtimeOnly "org.openjfx:javafx-base:${javaFxVersion}:linux"
+    runtimeOnly "org.openjfx:javafx-controls:${javaFxVersion}:linux"
+    runtimeOnly "org.openjfx:javafx-fxml:${javaFxVersion}:linux"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:linux"
 }
+
 
 
 javafx {
